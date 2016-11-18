@@ -10,7 +10,11 @@ __version__ = "0.3.4"
 __copyright__ = "Copyright (c) 2016 Project Vote Smart"
 __license__ = "BSD"
 
-import urllib, urllib2
+import urllib
+import urllib.error
+import urllib.request
+#not sure which one is necessary but I read on stackoverflow (http://stackoverflow.com/questions/2792650/python3-error-import-error-no-module-name-urllib2)
+#that urllib2 was split in python 3
 try:
     import json
 except ImportError:
@@ -216,9 +220,10 @@ class votesmart(object):
                 raise VotesmartApiError(obj['error']['errorMessage'])
             else:
                 return obj
-        except urllib2.HTTPError, e:
+#deleted the ",e" because it kept throwing me errors, afterwards it ran but the program broke in other places once I started API requests
+        except urllib2.HTTPError:
             raise VotesmartApiError(e)
-        except ValueError, e:
+        except ValueError:
             raise VotesmartApiError('Invalid Response')
 
     class address(object):
